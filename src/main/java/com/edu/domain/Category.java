@@ -2,6 +2,7 @@ package com.edu.domain;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 
 //@Table(name = "edu_category") 此处会覆盖全局都命名策略
@@ -20,6 +21,21 @@ public class Category {
 
     @Transient  //用于标识该属性不需要生成数据库表对应都字段
     private  String xxxx;
+
+
+   // @OneToMany  //这种方式会多出一张对照表，应该尽量避免这种方式，可以在Book中使用ManytoOne建立外键
+    // CascadeType.REMOVE:级联删除，删除Category的同时删掉book,
+    //orphanRemoval 默认的时候false,表示 执行List.remove的时候不会删掉该book记录，true在执行 remove(book)时会删掉
+    @OneToMany(mappedBy = "category",cascade = CascadeType.REMOVE, orphanRemoval = false)  //由book这张表维护关系
+    private List<Book> books;
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 
     public long getId() {
         return id;
