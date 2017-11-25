@@ -33,6 +33,13 @@ public class Author {
     @ElementCollection
     private  List<Address> addresses;
 
+    @OneToMany(mappedBy = "author")
+    @OrderBy("book.name ASC")   //默认时id排序
+    private  List<BookAuthor> books;
+
+    @OneToOne
+    private  AuthorInfo info;
+
     public List<Address> getAddresses() {
         return addresses;
     }
@@ -95,5 +102,14 @@ public class Author {
 
     public void setHobbies(List<String> hobbies) {
         this.hobbies = hobbies;
+    }
+
+
+    public List<BookAuthor> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<BookAuthor> books) {
+        this.books = books;
     }
 }
