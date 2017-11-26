@@ -11,7 +11,7 @@ public class Book extends BaseEntity{
     private  String name;
 
     // opthinal=fale允许category为空，默认true
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)   //懒加载  默认是 eager，会直接加载
+    @ManyToOne(fetch = FetchType.LAZY,optional = true)   //懒加载  默认是 eager，会直接加载
     private  Category category;
 
     @OneToMany(mappedBy = "book")
