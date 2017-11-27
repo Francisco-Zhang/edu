@@ -1,13 +1,13 @@
 package com.edu.repository;
 
 import com.edu.domain.Book;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.Repository;
 
 import java.util.Date;
 import java.util.List;
 
-public interface BookRepository extends JpaRepository<Book,Long> {
+public interface BookPagingAndSortingRepository extends PagingAndSortingRepository<Book,Long> {
 
     List<Book> findByName(String name);
 
