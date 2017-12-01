@@ -4,10 +4,7 @@ import com.edu.BaseTest;
 import com.edu.domain.Book;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +23,28 @@ public class RepositoryTest extends BaseTest {
 
     @Autowired
     private  BookRepository bookRepository;   //最常用的是这个接口，继承上面三个接口的所有方法
+
+
+
+
+    @Test
+    public void test(){
+        //分页
+        Pageable pageable=new PageRequest(0,10,new Sort(Sort.Direction.ASC,"name","id"));
+
+        Book book=new Book();
+        book.setName("战争与和平");
+        book.setCreatedTime(null);
+        Example<Book> example=Example.of(book);     //局限性：不支持or、group by、between
+        bookRepository.findAll(example,pageable);   //1.Example查询  精确查询
+
+        ExampleMatcher exampleMatcher=ExampleMatcher.matching()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);  //只针对字符串类型起作用
+        Example<Book> example2=Example.of(book,exampleMatcher);
+        bookRepository.findAll(example2,pageable);   //2.Example查询  使用匹配器中的模糊查询（匹配器中还包含其他查询方式）
+
+    }
+
 
 
     @Test
@@ -76,6 +95,13 @@ public class RepositoryTest extends BaseTest {
         System.out.println(bookbaseRepository.getClass().getName());
         bookbaseRepository.findByName("战争与和平");
         bookbaseRepository.findByCreatedTime(new Date());
+
+        //通过接口方法声明生成sql
+        bookRepository.findByNameAndCategoryName("战争与和平","aaa");
+
+        bookRepository.findByNameLike("%战争与和平%");  //自己写 ％ 标明左右关联
+
+        bookRepository.findByNameLikeOrderByNameDesc("%战争与和平"); // 排序
     }
 
 

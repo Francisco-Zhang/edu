@@ -13,4 +13,11 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 
     List<Book>  findByCreatedTime(Date date);
 
+    List<Book>  findByNameAndCategoryName(String bookName,String categoryName);
+
+    //还包括 Or、Between、LessThan、LessThanEqual、GreaterThan、IsNull、NotNull等关键字
+    List<Book> findByNameLike(String name);
+
+    List<Book> findByNameLikeOrderByNameDesc(String name);
+
 }
