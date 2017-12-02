@@ -102,6 +102,14 @@ public class RepositoryTest extends BaseTest {
         bookRepository.findByNameLike("%战争与和平%");  //自己写 ％ 标明左右关联
 
         bookRepository.findByNameLikeOrderByNameDesc("%战争与和平"); // 排序
+
+        bookRepository.findByNameLikeAndCategoryNameOrderByNameDesc("%战争与和平%","战争",new PageRequest(0,10));
+        bookRepository.findBooks("%战争与和平%","战争",new PageRequest(0,10));
+
+        long count= bookRepository.findBooksCount("%战争与和平%","战争");
+
+        int r=bookRepository.updateBooks("aaa",1L);
+
     }
 
 
