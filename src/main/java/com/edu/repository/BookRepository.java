@@ -4,6 +4,7 @@ import com.edu.domain.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -11,7 +12,8 @@ import org.springframework.data.repository.Repository;
 import java.util.Date;
 import java.util.List;
 
-public interface BookRepository extends JpaRepository<Book,Long> {
+//JpaSpecificationExecutor是一个单独的接口，用于生成动态sql
+public interface BookRepository extends JpaRepository<Book,Long>,JpaSpecificationExecutor<Book> {
 
     List<Book> findByName(String name);
 

@@ -5,7 +5,9 @@ import com.edu.domain.Book;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -111,7 +113,20 @@ public class RepositoryTest extends BaseTest {
         int r=bookRepository.updateBooks("aaa",1L);
 
     }
+    @Test //动态查询
+    public  void  test4(){
+        Specification<Book> spec=new Specification<Book>() {
+            public Predicate toPredicate(Root<Book> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                Predicate p1 =criteriaBuilder.equal(root.get("name"),"战争与和平");
+                Predicate p2 =criteriaBuilder.equal(root.get("category").get("name"),"战争");
+                Predicate p3 =criteriaBuilder.and(p1,p2);   //组合模式，既是 实体 也是容器  and 相当于容器，组合两个 predicate
 
+                root.fetch("category", JoinType.LEFT);  // 指定查询语句包含 category字段，以及使用左连接
+                return p3;  // return p1;  也可以单独返回p1,都是Predicate对象
+            }
+        };
+        bookRepository.findOne(spec);
+    }
 
 
 
