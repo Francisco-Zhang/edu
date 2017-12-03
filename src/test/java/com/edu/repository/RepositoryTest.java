@@ -128,6 +128,11 @@ public class RepositoryTest extends BaseTest {
         bookRepository.findOne(spec);
     }
 
+    @Test
+    public  void  test5(){
+
+        bookRepository.save(new Book());  // 调用了自定义的 Repostory中的save方法
+    }
 
 
 
