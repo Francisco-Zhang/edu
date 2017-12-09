@@ -3,10 +3,7 @@ package com.edu.repository;
 import com.edu.domain.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.Repository;
 
 import java.util.Date;
@@ -15,7 +12,9 @@ import java.util.List;
 //JpaSpecificationExecutor是一个单独的接口，用于生成动态sql
 public interface BookRepository extends JpaRepository<Book,Long>,JpaSpecificationExecutor<Book> {
 
-    List<Book> findByName(String name);
+    //@EntityGraph(attributePaths = {"category"})
+    @EntityGraph("Book.fetch.category.and.author")  //使用这种方式，复用性更高，如果增加抓取属性author,只需修改Book的抓取策略，所有的方法都会变
+    Book findByName(String name);
 
     List<Book>  findByCreatedTime(Date date);
 

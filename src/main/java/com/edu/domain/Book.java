@@ -1,9 +1,17 @@
 package com.edu.domain;
 
+import org.springframework.data.jpa.repository.EntityGraph;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@NamedEntityGraph(name = "Book.fetch.category.and.author",
+attributeNodes = {
+        @NamedAttributeNode("category"),
+        @NamedAttributeNode("author")
+    }
+)
 public class Book extends BaseEntity{
 
 

@@ -174,5 +174,15 @@ public class RepositoryTest extends BaseTest {
         bookRepository.findAll();  // findAll 会始终执行sql
     }
 
+    @Test
+    public  void  test9() {
+        //Book book = bookRepository.findOne(1L);   // 如果抓取策略是eager，只会生成一条sql(关联查询)
+        Book book1 = bookRepository.findByName("战争与和平");  // 抓取策略eager  不会生效,需要在findByName方法上面使用@EntityGraph来设置关联查询
+
+        System.out.println(book1.getCategory().getName());
+
+    }
+
+
 
 }
