@@ -8,6 +8,6 @@ import javax.transaction.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BookShopApplication.class)
-@Transactional
+@Transactional   //对测试数据进行回滚
 public class BaseTest {
 }

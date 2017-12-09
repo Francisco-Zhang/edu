@@ -6,6 +6,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -26,7 +29,8 @@ public class RepositoryTest extends BaseTest {
     @Autowired
     private  BookRepository bookRepository;   //最常用的是这个接口，继承上面三个接口的所有方法
 
-
+    @Autowired
+    private PlatformTransactionManager transactionManager;
 
 
     @Test
@@ -134,6 +138,41 @@ public class RepositoryTest extends BaseTest {
         bookRepository.save(new Book());  // 调用了自定义的 Repostory中的save方法
     }
 
+    // 1.持久化上下文的生命周期与系统事务一致  2. 自动脏检查机制  3.持久化上下文是一级缓存
+    @Test   //持久化上下文测试
+    public  void  test6(){
+        Book book =bookRepository.findOne(1L);
+
+        System.out.println(book.getName());
+
+        book.setName("美女与野兽");
+        bookRepository.save(book);  // BaseTest 中 @Transactional 注明回滚，所以不生成 update语句，将注解注释掉后生成
+
+    }
+
+    @Test   //持久化上下文（相当与一个Map,存储上下文中加入的对象）测试
+    public  void  test7(){
+        TransactionStatus  status= transactionManager.getTransaction(new DefaultTransactionDefinition());  //Open
+
+        Book book =bookRepository.findOne(1L);
+        book.setName("美女与野兽2");
+        //bookRepository.save(book);  // BaseTest 中 @Transactional 注明回滚，所以不生成 update语句，将注解注释掉后生成
+        bookRepository.saveAndFlush(book);   // 立即同步，不用等下面的提交才进行对象状态检查以及数据库同步
+        System.out.println("success");
+
+        transactionManager.commit(status);  //Commit  检查持久化上下文状态和数据库状态是否一致，不一致更新，save 方法是不起作用的，可以注释掉
+    }
+
+    @Test
+    public  void  test8(){
+        Book book =bookRepository.findOne(1L);
+        Book book1 =bookRepository.findOne(1L);   //持久化上下文是一级缓存,首先从持久化上下文检查有没有id=1的对象，有的化就不执行sql语句
+
+        System.out.println("findAll");
+
+        bookRepository.findAll();
+        bookRepository.findAll();  // findAll 会始终执行sql
+    }
 
 
 }
