@@ -12,7 +12,10 @@ attributeNodes = {
         @NamedAttributeNode("author")
     }
 )
-public class Book extends BaseEntity{
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)   //默认为这种形式，即ebook,printBook都在一张表
+//@Inheritance(strategy = InheritanceType.JOINED)  //这种方式会生成三张表，通过外键关联
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)  // 生成三张表，每个类生成一张表，注意要修改主键的生成方式，防止主键重复，适用于子类比较少（不适合union）,父子类差别比较大
+public class Book extends BaseEntity{     //以上两种方式执行 test10会生成不同的表和操作sql,
 
 
 
