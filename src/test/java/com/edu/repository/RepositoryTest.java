@@ -2,6 +2,8 @@ package com.edu.repository;
 
 import com.edu.BaseTest;
 import com.edu.domain.Book;
+import com.edu.domain.Ebook;
+import com.edu.domain.PrintBook;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -28,6 +30,9 @@ public class RepositoryTest extends BaseTest {
 
     @Autowired
     private  BookRepository bookRepository;   //最常用的是这个接口，继承上面三个接口的所有方法
+
+    @Autowired
+    private  PrintBookRepository printBookRepository;   // 用于只查询findAll 只查询printBook 对象
 
     @Autowired
     private PlatformTransactionManager transactionManager;
@@ -182,6 +187,26 @@ public class RepositoryTest extends BaseTest {
         System.out.println(book1.getCategory().getName());
 
     }
+
+    @Test
+    public  void  test10() {
+        PrintBook printBook=new PrintBook();
+        printBook.setName("printBook");
+        bookRepository.save(printBook);
+
+        Ebook ebook = new Ebook();
+        ebook.setName("ebook");
+        bookRepository.save(ebook);
+
+        List<Book> books=bookRepository.findAll();
+        books.stream().forEach(book->System.out.println(book.getClass().getSimpleName()));
+
+
+        List<PrintBook> printBooks=printBookRepository.findAll();
+        printBooks.stream().forEach(book->System.out.println(book.getClass().getSimpleName()));
+
+    }
+
 
 
 
