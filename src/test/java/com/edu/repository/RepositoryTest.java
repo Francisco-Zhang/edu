@@ -208,6 +208,13 @@ public class RepositoryTest extends BaseTest {
     }
 
 
+    @Test
+    public  void  test11(){
+        Book book = bookRepository.findOne(1L);
+        book.setName("xxxxx");
+        bookRepository.saveAndFlush(book);
+    }
+
 
 
 }

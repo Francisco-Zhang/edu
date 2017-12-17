@@ -28,6 +28,10 @@ public class Book extends BaseEntity{     //以上两种方式执行 test10会�
     @OneToMany(mappedBy = "book")
     private List<BookAuthor> author;
 
+    @Version
+    private  int version;
+
+
     public String getName() {
         return name;
     }
@@ -50,5 +54,13 @@ public class Book extends BaseEntity{     //以上两种方式执行 test10会�
 
     public void setAuthor(List<BookAuthor> author) {
         this.author = author;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }
