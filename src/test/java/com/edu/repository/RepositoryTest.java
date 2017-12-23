@@ -1,6 +1,7 @@
 package com.edu.repository;
 
 import com.edu.BaseTest;
+import com.edu.domain.Author;
 import com.edu.domain.Book;
 import com.edu.domain.Ebook;
 import com.edu.domain.PrintBook;
@@ -33,6 +34,9 @@ public class RepositoryTest extends BaseTest {
 
     @Autowired
     private  PrintBookRepository printBookRepository;   // 用于只查询findAll 只查询printBook 对象
+
+    @Autowired
+    private  AuthorRepository authorRepository;
 
     @Autowired
     private PlatformTransactionManager transactionManager;
@@ -213,6 +217,13 @@ public class RepositoryTest extends BaseTest {
         Book book = bookRepository.findOne(1L);
         book.setName("xxxxx");
         bookRepository.saveAndFlush(book);
+    }
+
+    @Test
+    public  void  test12(){
+        Author author = new Author();
+        author.setEmail("xxxx");
+        authorRepository.saveAndFlush(author);
     }
 
 

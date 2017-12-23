@@ -1,6 +1,10 @@
 package com.edu.domain;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +27,10 @@ public class Author  extends BaseEntity{
     @Embedded      //被注入的一批属性 ，用于内嵌对象的映射 ，具有相同生命周期（有Author,就有address）
     private  Address address;
 
+    @Email
+    //@Pattern()    必须匹配正则表达式，此外 hebernate  validator 还提供了其他功能的校验注解,hebernate  validator是应用层面的
+    //@NotBlank     并不影响数据库字段的约束，只是在添加数据的时候做检查，而Colunm注解中的notNull是影响数据库自动定义的
+    private  String Email;
 
     @ElementCollection   //集合注解，数据库会多出一张表
     private List<String> hobbies;
@@ -102,5 +110,14 @@ public class Author  extends BaseEntity{
 
     public void setBooks(List<BookAuthor> books) {
         this.books = books;
+    }
+
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
     }
 }
